@@ -21,6 +21,7 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     public required init() {
+        print("Pages Video YPVideoCaptureVC init()")
         super.init(nibName: nil, bundle: nil)
         title = YPConfig.wordings.videoTitle
         videoHelper.didCaptureVideo = { [weak self] videoURL in
@@ -41,6 +42,7 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
+        print("Pages Video YPVideoCaptureVC viewDidLoad()")
         v.timeElapsedLabel.isHidden = false // Show the time elapsed label since we're in the video screen.
         setupButtons()
         linkButtons()
@@ -55,6 +57,7 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     }
 
     func start() {
+        print("Pages Video YPVideoCaptureVC start()")
         v.shotButton.isEnabled = false
         doAfterPermissionCheck { [weak self] in
             guard let strongSelf = self else {

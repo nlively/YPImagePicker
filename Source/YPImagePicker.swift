@@ -68,6 +68,8 @@ override open func viewDidLoad() {
         viewControllers = [picker]
         setupLoadingView()
         navigationBar.isTranslucent = false
+    
+        print("YPImagePicker viewDidLoad")
 
         picker.didSelectItems = { [weak self] items in
             // Use Fade transition instead of default push animation

@@ -46,6 +46,7 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
+        print("YPPickerVC viewDidLoad")
 
         view.backgroundColor = YPConfig.colors.safeAreaBackgroundColor
         
@@ -75,6 +76,7 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         if YPConfig.screens.contains(.video) {
             videoVC = YPVideoCaptureVC()
             videoVC?.didCaptureVideo = { [weak self] videoURL in
+                print("didCaptureVideo callback")
                 self?.didSelectItems?([YPMediaItem
                     .video(v: YPMediaVideo(thumbnail: thumbnailFromVideoPath(videoURL),
                                            videoURL: videoURL,
@@ -297,11 +299,21 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
     
     @objc
     func close() {
-        // Cancelling exporting of all videos
-        if let libraryVC = libraryVC {
-            libraryVC.mediaManager.forseCancelExporting()
-        }
-        self.didClose?()
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "Ok", style: .default, handler: { _ in
+            // Cancelling exporting of all videos
+            if let libraryVC = self.libraryVC {
+                libraryVC.mediaManager.forseCancelExporting()
+            }
+            self.didClose?()
+        })
+        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(okButton)
+        alertController.addAction(cancelButton)
+        alertController.title = "Alert"
+        alertController.message = "Are you sure you want to cancel?"
+       
+        self.present(alertController, animated: true, completion: nil)
     }
     
     // When pressing "Next"

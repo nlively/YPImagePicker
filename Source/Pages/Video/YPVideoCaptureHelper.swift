@@ -191,6 +191,7 @@ class YPVideoCaptureHelper: NSObject {
                 if let orientation = orientation, connection.isVideoOrientationSupported {
                     connection.videoOrientation = orientation
                 }
+                print("starting recording y'all")
                 strongSelf.videoOutput.startRecording(to: outputURL, recordingDelegate: strongSelf)
             }
         }
@@ -238,7 +239,7 @@ class YPVideoCaptureHelper: NSObject {
             if session.canAddOutput(videoOutput) {
                 session.addOutput(videoOutput)
             }
-            session.sessionPreset = .high
+            session.sessionPreset = .hd1280x720
         }
         session.commitConfiguration()
         isCaptureSessionSetup = true
@@ -305,6 +306,7 @@ extension YPVideoCaptureHelper: AVCaptureFileOutputRecordingDelegate {
     public func fileOutput(_ captureOutput: AVCaptureFileOutput,
                            didStartRecordingTo fileURL: URL,
                            from connections: [AVCaptureConnection]) {
+        print("File video output - NGL a")
         timer = Timer.scheduledTimer(timeInterval: 1,
                                      target: self,
                                      selector: #selector(tick),
@@ -317,18 +319,15 @@ extension YPVideoCaptureHelper: AVCaptureFileOutputRecordingDelegate {
                            didFinishRecordingTo outputFileURL: URL,
                            from connections: [AVCaptureConnection],
                            error: Error?) {
-        if let error = error {
-            print(error)
-        }
 
-        if YPConfig.onlySquareImagesFromCamera {
-            YPVideoProcessor.cropToSquare(filePath: outputFileURL) { [weak self] url in
-                guard let _self = self, let u = url else { return }
-                _self.didCaptureVideo?(u)
-            }
-        } else {
-            self.didCaptureVideo?(outputFileURL)
-        }
+        print("File video output - NGL b")
+//        YPVideoProcessor.cropToSquare(filePath: outputFileURL) { [weak self] url in
+//            guard let _self = self, let u = url else { return }
+//            _self.didCaptureVideo?(u)
+//        }
+        
+        self.didCaptureVideo?(outputFileURL)
+        
         timer.invalidate()
     }
 }

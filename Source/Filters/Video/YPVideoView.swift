@@ -38,6 +38,7 @@ public class YPVideoView: UIView {
     }
     
     internal func setup() {
+        print("YPVideoView setup()")
         let singleTapGR = UITapGestureRecognizer(target: self,
                                                  action: #selector(singleTap))
         singleTapGR.numberOfTapsRequired = 1
